@@ -1,0 +1,42 @@
+= Doxml2AsciiDoc
+
+Utility that takes Doxygen XML and generates AsciiDoc formated API reference documentation.
+Its use-case is to input the doxygen generated XML from public-facing C/C++ header files
+and generate a represetable, easily read reference documentation for its interface.
+
+The following doxygen items are supported:
+
+* Brief
+* Input parameters
+* Return values
+* Detailed description, including code blocks
+
+== Running the Converter
+
+Install dependencies from repository through `bundle`
+----
+$ bundle
+----
+
+Generate XML output from running Doxygen on your project.
+Say you have a public API defined in `input.h`. Doxygen would produce
+an XML output in `xml/input_8h.xml`. Input this file to the converter.
+
+Execute the binary
+----
+$ ./bin/doxml2asciidoc input_8h.xml
+----
+
+An example `input.h` is defined link:example/input.h[here], whilst
+the result of the conversion is located link:example/input_8h.adoc[here].
+The HTML output after it is processed by Asciidoctor is shown link:example/input_8h.html[here].
+
+
+== Recreating the Example
+
+----
+$ doxygen example.doxygen
+$ doxml2asciidoc xml/input_8h.xml
+$ asciidoctor xml/input_8h.adoc
+$ open xml/input_8h.html
+----

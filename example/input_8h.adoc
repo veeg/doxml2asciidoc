@@ -1,0 +1,52 @@
+= input.h API Documentation
+:source-highlighter: coderay
+
+== Functions
+
+== swap
+
+[cols='h,5a']
+|===
+| Signature 
+|
+[source,C]
+----
+void swap (int *a, int *b)
+----
+
+| Parameters
+|
+*in* `int * a`::
+First integer address paramter that will be swapped with b. 
+*in* `int * b`::
+Second interger address paramter that will be swapped with a. 
+
+| Return
+|  
+
+| Description
+| 
+A brief API description.         
+
+| Details / Examples 
+|
+A bit longer API descrption that contains some examples 
+----
+int a = 5;
+int b = 9;
+swap(&a, &b);
+
+----
+The result of the above example would be a = 9, b = 5;
+----
+if (a > b)
+{
+    swap(&a, &b);
+}
+
+----
+
+
+
+|===
+
