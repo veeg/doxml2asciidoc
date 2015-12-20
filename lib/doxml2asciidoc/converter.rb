@@ -235,6 +235,10 @@ class Converter
       str += "\n"
       str += "[cols='h,5a']\n"
       str += "|===\n"
+      str += "| Description\n"
+      str += "| #{func[:brief]}\n"
+      str += "\n"
+
       str += "| Signature \n"
       str += "|\n"
       str += "[source,C]\n"
@@ -242,6 +246,7 @@ class Converter
       str += "#{func[:definition]} #{func[:argsstring]}\n" 
       str += "----\n"
       str += "\n"
+
       str += "| Parameters\n"
       str += "|\n"
       func[:params].each do |param|
@@ -249,24 +254,26 @@ class Converter
         str += "#{param[:description]}\n"
       end
       str += "\n"
+
       str += "| Return\n"
       str += "| #{func[:return]} \n"
       str += "\n"
-      str += "| Description\n"
-      str += "| #{func[:brief]}\n"
-      str += "\n"
-      str += "| Details / Examples \n"
-      str += "|\n"
-      func[:detail].each do |detail|
-        if detail[:type] == :code
-        str += "----\n"
-        str += "#{detail[:value]}\n"
-        str += "----\n"
-        elsif detail[:type] == :text
+
+      # All entries have one '\n' :text entry - Ignore this section if so.
+      if func[:detail].length > 2
+        str += "| Details / Examples \n"
+        str += "|\n"
+        func[:detail].each do |detail|
+          if detail[:type] == :code
+          str += "----\n"
           str += "#{detail[:value]}\n"
+          str += "----\n"
+          elsif detail[:type] == :text
+            str += "#{detail[:value]}\n"
+          end
         end
+        str += "\n"
       end
-      str += "\n"
       str += "|===\n"
       str += "\n"
     end
