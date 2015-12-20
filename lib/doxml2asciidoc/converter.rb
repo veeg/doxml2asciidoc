@@ -170,19 +170,17 @@ class Converter
                       end
                     end
                   end
+
+                elsif child.element? and child.name.eql? 'simplesect'
+                  case child['kind']
+                  when "return"
+                    hsh[:return] =  child.text
+                  else
+                    STDERR.puts 'detailed description -> simplesect kind not handled: ' + child['kind']
+                  end
                   
                 else
                   STDERR.puts "detailed description paramter child not handlled: " + child.name
-                end
-              end
-
-              # Get the return type
-              if para.xpath('./simplesect')
-                para.xpath('./simplesect').each do |sect|
-                  if sect['kind'].eql? "return"
-                    # Might need to access <param></param> to retrieve it.
-                    hsh[:return] =  sect.text
-                  end
                 end
               end
 
