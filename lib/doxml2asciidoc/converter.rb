@@ -3,7 +3,7 @@ require 'fileutils'
 module Doxml2AsciiDoc
 class Converter
 
-  @@verbose = true
+  @@verbose = false
 
   def initialize opts = {}
     @root = nil
@@ -86,7 +86,7 @@ class Converter
       when 'dir'
         # Silently ignore this compound - we dont care about it.
       else
-        STDERR.puts "Unhandled doxygenindex compound kind: " + compound['kind']
+        $stderr.puts "Unhandled doxygenindex compound kind: " + compound['kind']
       end
     end
 
@@ -101,7 +101,8 @@ class Converter
            :language => compound['language'],
            :functions => [],
            :enums => [],
-           :typedefs => []
+           :typedefs => [],
+           :vars => []
           }
 
     compound.xpath('./sectiondef').each do |section|
@@ -118,6 +119,9 @@ class Converter
       when 'enum'
         ret = parse_sectiondef_enum(section)
         hsh[:enums].concat(ret)
+      when 'var'
+        ret = parse_sectiondef_var(section)
+        hsh[:vars].concat(ret)
       else
         raise "Unhandled section kind " + section['kind']
       end
@@ -127,6 +131,15 @@ class Converter
   end
 
   def parse_sectiondef_define section
+    # TODO: Implement me
+    $stderr.puts "WARNING: sectiondef define not implemented."
+    []
+  end
+
+  def parse_sectiondef_var section
+    # TODO: implement me
+    $stderr.puts "WARNING: sectiondef var not implemented."
+    []
   end
 
   def parse_sectiondef_typedef section
@@ -269,11 +282,11 @@ class Converter
                   when "return"
                     hsh[:return] <<  child.text
                   else
-                    STDERR.puts 'detailed description -> simplesect kind not handled: ' + child['kind']
+                    $stderr.puts 'detailed description -> simplesect kind not handled: ' + child['kind']
                   end
 
                 else
-                  STDERR.puts "detailed description parameter child not handled: " + child.name
+                  $stderr.puts "detailed description parameter child not handled: " + child.name
                 end
               end
 
@@ -302,7 +315,7 @@ class Converter
         line = parse_codeline c, line
       end
     else
-      STDERR.puts "Codeline element not handled: " + e.name
+      $stderr.puts "Codeline element not handled: " + e.name
     end
     line
   end
@@ -323,8 +336,6 @@ end
     end
 
     def generate
-
-      puts "Generating outputfile for: #{@name}"
 
       @str = "= #{@name} API Documentation\n"
       @str += ":source-highlighter: coderay\n"
