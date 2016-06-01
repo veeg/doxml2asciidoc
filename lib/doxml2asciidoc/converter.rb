@@ -211,8 +211,16 @@ class Converter
 
         params = []
         member.xpath('./param').each do |param|
-          param = {:type => param.at_xpath('./type').text,
-                   :declname => param.at_xpath('./declname').text}
+          t = param.at_xpath('./type')
+          d = param.at_xpath('./declname')
+          t ||= t.text
+          d ||= t.text
+          if t.nil? || d.nil?
+            $stdout.puts "WARNING: Function #{hsh[:function_name]} para type: #{t}, para decl: #{d}"
+          end
+          param = {:type => t,
+                   :declname => d,
+                  }
           params.push param
         end
         hsh[:params] = params
